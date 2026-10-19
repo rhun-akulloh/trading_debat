@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { getDictionary } from "@/dictionaries";
@@ -9,8 +9,19 @@ import { I18nProvider } from "@/components/i18n-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
-const body = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
-const heading = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-heading", display: "swap", weight: ["600", "700", "800"] });
+// Self-hosted (from node_modules) so the build never depends on fetching Google Fonts.
+const body = localFont({
+  src: "../../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2",
+  weight: "100 1000",
+  variable: "--font-body",
+  display: "swap",
+});
+const heading = localFont({
+  src: "../../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2",
+  weight: "200 800",
+  variable: "--font-heading",
+  display: "swap",
+});
 
 export const viewport: Viewport = {
   themeColor: [

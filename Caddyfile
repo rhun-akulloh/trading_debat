@@ -1,0 +1,10 @@
+# {$SITE_DOMAIN} comes from docker-compose (e.g. debaattrading.nl). Caddy fetches the HTTPS certificate itself.
+{$SITE_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy app:8080
+}
+
+# www → no-www
+www.{$SITE_DOMAIN} {
+	redir https://{$SITE_DOMAIN}{uri} permanent
+}

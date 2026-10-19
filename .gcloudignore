@@ -1,0 +1,11 @@
+# Used by `gcloud run deploy --source .` — decides what is uploaded to Google Cloud Build.
+#!include:.gitignore
+.git
+node_modules
+.next
+.data
+.env
+.env.*
+!.env.example
+admin*.txt
+hash.txt

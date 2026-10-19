@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --bg: #f1f5f3;
+  --surface: #ffffff;
+  --surface-2: #e3ebe7;
+  --ink: #0f1f1e;
+  --muted: #546461;
+  --line: #d3dfda;
+  --brand: #0e3b3a;
+  --brand-2: #0b6e63;
+  --brand-deep: #071f1e;
+  --accent: #ff6a3d;
+  --accent-2: #ff8a5c;
+  --ok: #12a150;
+  --shadow: 0 1px 2px rgb(7 31 30 / 0.06), 0 6px 18px rgb(7 31 30 / 0.07);
+  --shadow-lg: 0 2px 4px rgb(7 31 30 / 0.07), 0 20px 44px rgb(7 31 30 / 0.14);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #06130f;
+  --surface: #0d1d1a;
+  --surface-2: #152724;
+  --ink: #eef5f2;
+  --muted: #92a8a2;
+  --line: #213632;
+  --brand: #ff6a3d;
+  --brand-2: #ff9770;
+  --brand-deep: #071f1e;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.45), 0 8px 24px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.45), 0 24px 56px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-brand-deep: var(--brand-deep);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-ok: var(--ok);
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-heading), var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --shadow-card: var(--shadow);
+  --shadow-lift: var(--shadow-lg);
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-kenburns: kenburns 18s ease-in-out infinite alternate;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-blob: blob 22s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes kenburns {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to { transform: scale(1.14) translate3d(-2%, -1.5%, 0); }
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes blob {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(8%, -6%, 0) scale(1.15); }
+  66% { transform: translate3d(-6%, 8%, 0) scale(0.92); }
+}
+
+/* A bare `grid` gets one column that may shrink below its content (minmax(0,1fr)) instead of `auto`, which
+   lets a wide child — e.g. a row of photo thumbnails — stretch the whole page past the phone screen.
+   Base layer: explicit grid-cols-* utilities still override it. */
+@layer base {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.015em; }
+
+::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- brand surfaces ---------- */
+.bg-brand-gradient {
+  background: linear-gradient(135deg, #071f1e 0%, #0e3b3a 55%, #14524e 100%);
+}
+.bg-accent-gradient {
+  background: linear-gradient(135deg, #ff8a5c 0%, #ff6a3d 52%, #ff5a2a 100%);
+}
+.text-gradient {
+  background: linear-gradient(95deg, #ffb08a 0%, #ff6a3d 55%, #ff5a2a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-gradient-brand {
+  background: linear-gradient(95deg, var(--brand-2), var(--brand));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.mesh {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.mesh i {
+  position: absolute; display: block; border-radius: 9999px; filter: blur(70px); opacity: 0.55;
+  animation: var(--animate-blob);
+}
+.grid-bg {
+  background-image: radial-gradient(rgb(255 255 255 / 0.16) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 75%);
+}
+/* Road-marking dashes instead of a hazard stripe. */
+.hazard {
+  background: repeating-linear-gradient(90deg, var(--accent) 0 44px, transparent 44px 60px);
+}
+.glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+}
+.shimmer {
+  background: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 0.35) 50%, transparent 80%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+.prose-terms p { margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

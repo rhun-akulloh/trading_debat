@@ -1,0 +1,38 @@
+# VPS setup: the website + Caddy, which gets and renews the HTTPS certificate automatically.
+#   1. copy .env.production.example → .env.production and fill it in
+#   2. point your domain's DNS (A record) at the server
+#   3. docker compose up -d --build
+services:
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://debaattrading.nl}
+    env_file: .env.production
+    environment:
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - uploads:/data/uploads        # product photos survive restarts and updates
+    restart: unless-stopped
+    expose:
+      - "8080"
+
+  caddy:
+    image: caddy:2
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-localhost}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data             # certificates
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  uploads:
+  caddy_data:
+  caddy_config:

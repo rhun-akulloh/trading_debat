@@ -1,0 +1,18 @@
+# Never bake secrets or local junk into an image
+.git
+.gitignore
+node_modules
+.next
+.data
+.env
+.env.*
+!.env.example
+admin*.txt
+hash.txt
+npm-debug.log*
+*.md
+!README.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+public/uploads
